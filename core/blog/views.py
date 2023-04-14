@@ -4,8 +4,10 @@ from django.views.generic.base import RedirectView
 from django.views.generic import ListView, DetailView,FormView,CreateView
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView,DeleteView
 from django.shortcuts import get_object_or_404
 from .forms import PostForm
+
 # Create your views here.
 
 # function Base View show a template
@@ -59,4 +61,17 @@ class PostCreateView(CreateView):
     model = Post
     # fields = ('author','title','content','status','category','published_date')
     form_class = PostForm
+    success_url = "/blog/post/"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostEditView(UpdateView):
+    model = Post
+    form_class = PostForm
+    success_url = "/blog/post/"
+
+class PostDeleteView(DeleteView):
+    model = Post
     success_url = "/blog/post/"
