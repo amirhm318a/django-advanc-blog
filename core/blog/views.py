@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 from django.views.generic import ListView, DetailView,FormView,CreateView
 from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from .forms import PostForm
 # Create your views here.
@@ -29,7 +30,7 @@ class RedirectToMaktab(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
     
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin,ListView):
     # queryset = Post.objects.all()
     model = Post
     context_object_name = 'posts'
